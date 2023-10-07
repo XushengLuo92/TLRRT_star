@@ -143,3 +143,19 @@ Time for the suffix path: 2.4176 s
 t_pre  | t_suf  | t_total | cost
 2.9102 | 2.4176 | 7.1510  | 7.9073
 ```
+
+# Citation
+
+```
+@article{luo2021abstraction,
+  title={An abstraction-free method for multirobot temporal logic optimal control synthesis},
+  author={Luo, Xusheng and Kantaros, Yiannis and Zavlanos, Michael M},
+  journal={IEEE Transactions on Robotics},
+  volume={37},
+  number={5},
+  pages={1487--1507},
+  year={2021},
+  publisher={IEEE}
+}
+
+```
