@@ -22,7 +22,7 @@ def workspace_plot(workspace, r_or_o, id_r_or_o, ax):
     plt.rc('text', usetex=True)
     plt.rc('font', family='serif')
     plt.gca().set_aspect('equal', adjustable='box')
-    plt.grid(b=True, which='major', color='k', linestyle='--')
+    plt.grid(visible=True, which='major', color='k', linestyle='--')
     for key in r_or_o.keys():
         color = '0.75' if id_r_or_o != 'region' else 'c'
         x = []
@@ -31,7 +31,7 @@ def workspace_plot(workspace, r_or_o, id_r_or_o, ax):
         for point in list(r_or_o[key].exterior.coords)[:-1]:
             x.append(point[0])
             y.append(point[1])
-        polygon = Polygon(np.column_stack((x, y)), True)
+        polygon = Polygon(np.column_stack((x, y)))
         patches.append(polygon)
         p = PatchCollection(patches, facecolors=color, edgecolors=color)
         ax.add_collection(p)

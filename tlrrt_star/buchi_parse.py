@@ -37,12 +37,12 @@ class Buchi(object):
         """
         parse the output of the program ltl2ba and build the buchi automaton
         """
-        program = 'online'
+        program = 'offline'
         if program == 'offline':
             # directory of the program ltl2ba
             dirname = os.path.dirname(__file__)
             # output of the program ltl2ba
-            output = subprocess.check_output(dirname + "/./ltl2ba -f \"" + self.formula + "\"", shell=True).decode(
+            output = subprocess.check_output(dirname + "/.././ltl2ba -f \"" + self.formula + "\"", shell=True).decode(
                 "utf-8")
             # find all states/nodes in the buchi automaton
             states = r'\n(\w+):'

@@ -1,0 +1,11 @@
+# run: conda env create --file environment.yml
+name: tlrrt_star
+channels:
+  - anaconda
+  - defaults
+dependencies:
+  - python=3.10.14
+  - pip
+  - anaconda::pygraphviz
+  - pip:
+    - -r requirements.txt

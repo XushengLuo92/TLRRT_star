@@ -183,21 +183,21 @@
 #done
 
 ## case 3
-for m in 7
-do
-    echo "----------------------r = ${m}------------------------"
-    for n1 in 1 2 3
-    do
-        for n2 in 1 2 3
-        do
-            for n3 in 1 2 3
-            do
-               /usr/local/opt/python@3.8/bin/python3 /Users/chrislaw/Github/TLRRT_star/biased_TLRRT_star.py ${m} ${n1} ${n2}
-            done
-#            /usr/local/Cellar/python/3.6.3/Frameworks/Python.framework/Versions/3.6/bin/python3.6 /Users/chrislaw/Github/TLRRT_star/SMC.py  ${m} ${n1} ${n2}
-        done
-    done
-done
+# for m in 7
+# do
+#     echo "----------------------r = ${m}------------------------"
+#     for n1 in 1 2 3
+#     do
+#         for n2 in 1 2 3
+#         do
+#             for n3 in 1 2 3
+#             do
+#                /usr/local/opt/python@3.8/bin/python3 /Users/chrislaw/Github/TLRRT_star/biased_TLRRT_star.py ${m} ${n1} ${n2}
+#             done
+# #            /usr/local/Cellar/python/3.6.3/Frameworks/Python.framework/Versions/3.6/bin/python3.6 /Users/chrislaw/Github/TLRRT_star/SMC.py  ${m} ${n1} ${n2}
+#         done
+#     done
+# done
 
 
 #for r in 0.02

@@ -9,34 +9,32 @@ increases the scalability of our algorithm. To accelerate the construction of fe
 sampling process which is guided by transitions in the Büchi automaton that belong to the shortest path to the accepting
 states.
 
-# Requirements
-* [Python >=3.6](https://www.python.org/downloads/)
-* [sympy](https://www.sympy.org/en/index.html)
-* [re]()
-* [Pyvisgraph](https://github.com/TaipanRex/pyvisgraph)
-* [NetworkX](https://networkx.github.io)
-* [Shapely](https://github.com/Toblerity/Shapely)
-* [scipy](https://www.scipy.org)
-* [matplotlib](https://matplotlib.org)
-* [termcolor](https://pypi.org/project/termcolor/)
+# Develop
+```bash
+cd /path/to/TLRRT_STAR
+conda env create -f environment.yml
+conda activate tlrrt_star           
+pip install tqdm 
+```
+### Install ltl2ba
+Download the software `LTL2BA` from this [link](http://www.lsv.fr/~gastin/ltl2ba/index.php), and follow the instructions to generate the exectuable `ltl2ba` and then copy it into the folder `TLRRT_STAR`.
 
 # Usage
 ## Structures
-* Class [Task](task.py) defines the task specified in LTL
-* Class [Workspace](workspace.py) define the workspace where robots reside
-* Class [Buchi](buchi_parse.py) constructs the graph of NBA from LTL formula
-* Class [BiasedTree](biased_tree.py) involves the initialization of the tree and relevant operations
-* Function [construction_biased_tree](construct_biased_tree.py) incrementally grow the tree
-* Script [biased_TLRRT_star.py](biased_TLRRT_star.py) contains the main function
-* Functions [path_plot](draw_picture.py) and [path_print](draw_picture.py) draw and print the paths, respectively
+* Class [Task](tlrrt_star/task.py) defines the task specified in LTL
+* Class [Workspace](tlrrt_star/workspace.py) define the workspace where robots reside
+* Class [Buchi](tlrrt_star/buchi_parse.py) constructs the graph of NBA from LTL formula
+* Class [BiasedTree](tlrrt_star/biased_tree.py) involves the initialization of the tree and relevant operations
+* Function [construction_biased_tree](tlrrt_star/construct_biased_tree.py) incrementally grow the tree
+* Script [biased_TLRRT_star.py](tlrrt_star/biased_TLRRT_star.py) contains the main function
+* Functions [path_plot](tlrrt_star/draw_picture.py) and [path_print](tlrrt_star/draw_picture.py) draw and print the paths, respectively
 ## Basic procedure
-* First, specify the LTL task in the class [Task](task.py), which mainly involves the assigned task, the number of robots
-, the initial locations of robots and the minimum distance between any pair of robots, and workspace in the class [Workspace](/workspace.py) that contains the information about the size of the workspace, the layout of regions and obstacles. 
-* Second, set the parameters used in the TL-RRT* in the script [construct_biased_tree.py](/construct_biased_tree.py), such as the maximum number of iterations, the step size, whether the lite version in [biased_tree.py](/biased_tree.py) is used that does not use functions `near`, `extend` and `rewire`. 
+* First, specify the LTL task in the class [Task](tlrrt_star/task.py), which mainly involves the assigned task, the number of robots
+, the initial locations of robots and the minimum distance between any pair of robots, and workspace in the class [Workspace](tlrrt_star/workspace.py) that contains the information about the size of the workspace, the layout of regions and obstacles. 
+* Second, set the parameters used in the TL-RRT* in the script [construct_biased_tree.py](tlrrt_star/construct_biased_tree.py), such as the maximum number of iterations, the step size, whether the lite version in [biased_tree.py](/biased_tree.py) is used that does not use functions `near`, `extend` and `rewire`. 
 * Finally, after the TL-RRT* terminates, the runtime and the cost of the solution are presented. What's more, the path composed of prefix and suffix parts for each robot is drawn with workspace layout when the number of robots is relatively small, otherwise, the path for each robot is printed onto the screen when the number of robots is large. 
 
 # Example
-
 ## Workspace
 The workspace of size `1-by-1` is shown below, with `l_1`-`l_6` being regions and `o_1`-`o_2` being obstacles
 <p align="center">
@@ -66,6 +64,10 @@ Furthermore, the construction of the tree terminates once an accepting node is d
 if len(tree.goals): break
 ```
 ### Case 1
+```bash
+cd /path/to/TLRRT_STAR/tlrrt_star
+python biased_TLRRT_star.py --case=1 
+```
 The task involving one robot is specified by 
 ```python
 self.formula = '<> e1 && []<> (e2 && <> e3) && (!e3 U e4) && []!e5'
@@ -94,6 +96,9 @@ t_pre  | t_suf  | t_total | cost
 robot 1 :  . -->  . -->  . -->  . -->  . -->  . -->  . --> l4 --> l1 -->  . -->  . --> l2 --> l2 --> || l2 --> l3 --> l3 -->  . --> l2 --> l2 --> l2 --> || 
 ```
 ### Case 2
+```bash
+python biased_TLRRT_star.py --case=2
+```
 The task involving two robots is specified by 
 ```python
 self.formula = '[]<> e1 && []<> e3 && !e1 U e2'
@@ -121,6 +126,9 @@ robot 1 :  . -->  . -->  . --> l4 --> l6 -->  . -->  . -->  . --> l1 --> l1 --> 
 robot 2 :  . -->  . -->  . -->  . -->  . -->  . -->  . -->  . --> l5 --> l5 --> || l5 --> ||
 ```
 ### Case 3
+```
+python biased_TLRRT_star.py --case=3 --num=2 --vis
+```
 The task involving `8*num_of_robot_in_one_group` robots is specified by 
 ```python
 self.formula = '[]<> e1 && []<> e2 && []<> e3 && []<>(e4 && <>(e5 && <> e6)) && <> e7 && []<>e8 && (!e7 U e8)'

@@ -6,18 +6,35 @@ from workspace import Workspace
 import datetime
 from collections import OrderedDict
 import numpy as np
-from unbiased_tree import unbiasedTree
-from unbiased_construct_unbiased_tree import construction_unbiased_tree, path_via_visibility
+from biased_tree import BiasedTree
+from construct_biased_tree import construction_biased_tree, path_via_visibility
 from draw_picture import path_plot, path_print
 import matplotlib.pyplot as plt
 import pyvisgraph as vg
 from termcolor import colored
 import pickle
 import sys
+import argparse
 
+def create_parser():
+    """ create parser
+
+    Returns:
+        _type_: _description_
+    """
+    parser = argparse.ArgumentParser(description='FM')
+    parser.add_argument('--case', default=0, type=int)
+    parser.add_argument('--vis', action='store_true', help='Enable visualization')
+    parser.add_argument('--num', default=2, type=int)
+
+    return parser
+
+parser = create_parser()
+args = parser.parse_known_args()[0]
+    
 # task
 start = datetime.datetime.now()
-task = Task()
+task = Task(int(args.case), int(args.num))
 # with open('data_3_1_1', 'rb') as filehandle:
 # with open('data_{0}_{1}_{2}'.format(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3])), 'rb') as filehandle:
 #     task = pickle.load(filehandle)
@@ -42,13 +59,15 @@ n_max = 100000000
 para = dict()
 # lite version, excluding extending and rewiring
 para['is_lite'] = False
-
+# step_size used in function near
+para['step_size'] = np.inf  # 0.25 * buchi.number_of_robots
+# probability of choosing node q_p_closest
+para['p_closest'] = 0.9
+# probability used when deciding the target point
+para['y_rand'] = 0.99
 # minimum distance between any pair of robots
 para['threshold'] = task.threshold
 para['weight'] = 0.2
-
-# step_size used in function near
-para['step_size'] = np.inf # 0.4 * buchi.number_of_robots
 
 cost_path = OrderedDict()
 
@@ -65,10 +84,10 @@ for b_init in buchi_graph.graph['init']:
     start = datetime.datetime.now()
     init_state = (task.init, b_init)
     init_label = task.init_label
-    tree_pre = unbiasedTree(workspace, buchi, init_state, init_label, 'prefix', para)
+    tree_pre = BiasedTree(workspace, buchi, init_state, init_label, 'prefix', para)
     print('------------------------------ prefix path --------------------------------')
     # construct the tree for the prefix part
-    cost_path_pre = construction_unbiased_tree(tree_pre, n_max)
+    cost_path_pre = construction_biased_tree(tree_pre, n_max)
     if len(tree_pre.goals):
         pre_time = (datetime.datetime.now() - start).total_seconds()
         print('Time for the prefix path: {0:.4f} s'.format(pre_time))
@@ -94,12 +113,12 @@ for b_init in buchi_graph.graph['init']:
     for i in range(1):  # range(len(tree_pre.goals)):
         # set the goal product state of the prefix part as the initial state
         init_state = goals[i]
-        init_label = tree_pre.unbiased_tree.nodes[init_state]['label']
+        init_label = tree_pre.biased_tree.nodes[init_state]['label']
         buchi_graph.graph['accept'] = init_state[1]
-        tree_suf = unbiasedTree(workspace, buchi, init_state, init_label, 'suffix', para)
+        tree_suf = BiasedTree(workspace, buchi, init_state, init_label, 'suffix', para)
 
         # construct the tree for the suffix part
-        cost_path_suf_cand = construction_unbiased_tree(tree_suf, n_max)
+        cost_path_suf_cand = construction_biased_tree(tree_suf, n_max)
 
         print('-------------- suffix path for {0}-th pre-goal (of {1} in total) --------------'.format(i+1,
                                                                                          len(tree_pre.goals)))
@@ -150,5 +169,6 @@ for b_init in buchi_graph.graph['init']:
     print('------------------------- print the path path -----------------------------')
     print('(. for empty label,', colored('||', 'yellow'), '...', colored('||', 'yellow'), 'for the suffix path)')
     path_print((opt_path_pre, opt_path_suf), workspace, buchi.number_of_robots)
-    path_plot((opt_path_pre, opt_path_suf), workspace, buchi.number_of_robots)
-    plt.show()
+    if args.vis:
+        path_plot((opt_path_pre, opt_path_suf), workspace, buchi.number_of_robots)
+        plt.show()
