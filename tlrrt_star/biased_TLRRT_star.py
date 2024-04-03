@@ -26,7 +26,7 @@ def create_parser():
     parser.add_argument('--case', default=0, type=int)
     parser.add_argument('--vis', action='store_true', help='Enable visualization')
     parser.add_argument('--num', default=2, type=int)
-
+    parser.add_argument('--random', action='store_true', help='Random initial states')
     return parser
 
 parser = create_parser()
@@ -34,7 +34,7 @@ args = parser.parse_known_args()[0]
     
 # task
 start = datetime.datetime.now()
-task = Task(int(args.case), int(args.num))
+task = Task(int(args.case), int(args.num), args.random)
 # with open('data_3_1_1', 'rb') as filehandle:
 # with open('data_{0}_{1}_{2}'.format(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3])), 'rb') as filehandle:
 #     task = pickle.load(filehandle)

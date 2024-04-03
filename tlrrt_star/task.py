@@ -10,7 +10,7 @@ class Task(object):
     """
     define the task specified in LTL
     """
-    def __init__(self, case, num_of_robot_in_one_group):
+    def __init__(self, case, num_of_robot_in_one_group, random_init_states):
         """
         +----------------------------+
         |   Propositonal Symbols:    |
@@ -101,8 +101,10 @@ class Task(object):
         self.init_label = []  # labels of initial locations
         for i in range(self.number_of_robots):
             while True:
-                # ini = [round(uniform(0, workspace.workspace[k]), 3) for k in range(len(workspace.workspace))]
-                ini = [0.8, 0.1]
+                if random_init_states:
+                    ini = [round(uniform(0, workspace.workspace[k]), 3) for k in range(len(workspace.workspace))]
+                else:
+                    ini = [0.8, 0.1]
                 ap = get_label(ini, workspace)
                 if 'o' not in ap:
                     break
