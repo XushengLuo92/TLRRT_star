@@ -66,7 +66,7 @@ if len(tree.goals): break
 ### Case 1
 ```bash
 cd /path/to/TLRRT_STAR/tlrrt_star
-python biased_TLRRT_star.py --case=1 
+python biased_TLRRT_star.py --case=1 --vis
 ```
 The task involving one robot is specified by 
 ```python
@@ -97,7 +97,7 @@ robot 1 :  . -->  . -->  . -->  . -->  . -->  . -->  . --> l4 --> l1 -->  . --> 
 ```
 ### Case 2
 ```bash
-python biased_TLRRT_star.py --case=2
+python biased_TLRRT_star.py --case=2 --vis
 ```
 The task involving two robots is specified by 
 ```python
