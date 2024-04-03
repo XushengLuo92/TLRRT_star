@@ -65,7 +65,7 @@ def path_plot(path, workspace, number_of_robots):
                          scale_units='xy', angles='xy', scale=1, label='suffix path')
 
         plt.legend(handles=[pre, suf])
-        plt.savefig('img/path{0}.png'.format(n+1), bbox_inches='tight', dpi=600)
+        plt.savefig('../img/path{0}.png'.format(n+1), bbox_inches='tight', dpi=600)
 
 
 def path_print(path, workspace, number_of_robots):
